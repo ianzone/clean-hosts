@@ -10,10 +10,19 @@ const execPromise = promisify(exec);
 
 async function ping(ip: string): Promise<number> {
   try {
-    const { stdout } = await execPromise(`ping -c 1 ${ip}`);
-    const match = stdout.match(/time=(\d+\.?\d*) ms/);
-    if (match) {
-      return Number.parseFloat(match[1]);
+    const { stdout } = await execPromise(`ping -c 3 ${ip}`);
+    // 如果丢包则返回无穷大
+    const packetLossMatch = stdout.match(/(\d+)% packet loss/);
+    if (packetLossMatch && packetLossMatch[1] !== '0') {
+      return Number.POSITIVE_INFINITY;
+    }
+    const matches = stdout.match(/time=(\d+\.?\d*) ms/g);
+    if (matches) {
+      // 取三次延迟平均值
+      const latencies = matches.map((match) => Number.parseFloat(match.split('=')[1]));
+      const averageLatency =
+        latencies.reduce((sum, latency) => sum + latency, 0) / latencies.length;
+      return Math.round(averageLatency);
     }
     return Number.POSITIVE_INFINITY;
   } catch {
@@ -26,13 +35,14 @@ async function filterIPsByLatency(hosts: HostsObj, maxLatency: number): Promise<
 
   for (const domain in hosts) {
     if (Object.hasOwn(hosts, domain)) {
-      const validIPs: string[] = [];
-      for (const ip of hosts[domain]) {
-        const latency = await ping(ip);
-        if (latency <= maxLatency) {
-          validIPs.push(ip);
-        }
-      }
+      const pingPromises = hosts[domain].map((ip) => ping(ip).then((latency) => ({ ip, latency })));
+      const results = await Promise.allSettled(pingPromises);
+
+      const validIPs = results
+        .filter((result) => result.status === 'fulfilled' && result.value.latency <= maxLatency)
+        .map(
+          (result) => (result as PromiseFulfilledResult<{ ip: string; latency: number }>).value.ip,
+        );
       filteredHosts[domain] = validIPs;
     }
   }
@@ -51,6 +61,7 @@ async function generateHostsFile() {
     .join('\n');
 
   writeFileSync('hosts', hostsFileContent);
+  console.log('Hosts file generated');
 }
 
 generateHostsFile();

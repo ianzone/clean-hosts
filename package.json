@@ -1,9 +1,13 @@
 {
   "name": "clean-hosts",
   "type": "module",
+  "scripts": {
+    "commit": "git add -A && git-cz"
+  },
   "devDependencies": {
     "@biomejs/biome": "^1.9.4",
     "@types/node": "^22.10.2",
-    "biome-extends": "^1.0.1"
+    "biome-extends": "^1.0.1",
+    "git-cz": "^4.9.0"
   }
 }
