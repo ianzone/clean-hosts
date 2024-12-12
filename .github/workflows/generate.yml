@@ -20,11 +20,11 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: lts/*
-      - run: node generate.mjs
+      - run: node --experimental-strip-types ./dnsResolve.ts
       - name: Commit and push changes
         run: |
           git config --global user.name 'github-actions[bot]'
           git config --global user.email 'github-actions[bot]@users.noreply.github.com'
-          git add hosts
-          git commit -m 'Update hosts file'
+          git add hosts.json hosts_deduped.json
+          git commit -m 'Update hosts JSON'
           git push origin main

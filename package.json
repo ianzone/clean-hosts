@@ -1,7 +1,9 @@
 {
   "name": "clean-hosts",
+  "type": "module",
   "devDependencies": {
-    "@types/node": "^22.10.2"
-  },
-  "type": "module"
+    "@biomejs/biome": "^1.9.4",
+    "@types/node": "^22.10.2",
+    "biome-extends": "^1.0.1"
+  }
 }
