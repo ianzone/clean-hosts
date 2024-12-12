@@ -1,0 +1,7 @@
+{
+  "name": "clean-hosts",
+  "devDependencies": {
+    "@types/node": "^22.10.2"
+  },
+  "type": "module"
+}
