@@ -2,6 +2,7 @@
   "name": "clean-hosts",
   "type": "module",
   "scripts": {
+    "build": "node --experimental-strip-types ./generate.ts",
     "commit": "git add -A && git-cz"
   },
   "devDependencies": {
