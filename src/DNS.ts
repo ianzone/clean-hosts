@@ -4,7 +4,6 @@ export class DNS {
   private readonly servers = [
     "8.8.8.8", // Google 公共 DNS
     "1.1.1.1", // Cloudflare 公共 DNS
-    "101.101.101.101", // 台湾 Quad 101 DNS
     "185.222.222.222", // DNS.SB 公共 DNS
     "94.140.14.14", // AdGuard 公共 DNS
     "208.67.222.222", // OpenDNS(Cisco)
