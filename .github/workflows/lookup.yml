@@ -1,8 +1,8 @@
-name: Generate
+name: Lookup Hosts
 on:
   schedule:
-    - cron: '0 0 * * *'  # 每天的UTC时间0点触发
-  workflow_dispatch:  # 允许手动触发
+    - cron: "0 0 * * *" # 每天的 UTC 时间 0 点触发
+  workflow_dispatch: # 允许手动触发
 
 permissions:
   contents: write
@@ -11,20 +11,18 @@ env:
   GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN  }}
 
 jobs:
-  generate:
+  lookup:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
         with:
           fetch-depth: 0
-      - uses: actions/setup-node@v4
-        with:
-          node-version: lts/*
-      - run: node --experimental-strip-types ./dnsResolve.ts
+      - uses: oven-sh/setup-bun@v2
+      - run: bun ./lookup.ts
       - name: Commit and push changes
         run: |
           git config --global user.name 'github-actions[bot]'
           git config --global user.email 'github-actions[bot]@users.noreply.github.com'
-          git add hosts.json hosts_deduped.json
-          git commit -m 'Update hosts JSON'
+          git add candidates.json
+          git commit -m 'Update candidates JSON'
           git push origin main

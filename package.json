@@ -2,13 +2,15 @@
   "name": "clean-hosts",
   "type": "module",
   "scripts": {
-    "build": "node --experimental-strip-types ./generate.ts",
+    "fmt": "oxfmt",
+    "fmt:check": "oxfmt --check",
+    "build": "bun ./generate.ts",
     "commit": "git add -A && git-cz"
   },
   "devDependencies": {
-    "@biomejs/biome": "^1.9.4",
-    "@types/node": "^22.10.2",
-    "biome-extends": "^1.0.1",
-    "git-cz": "^4.9.0"
+    "@types/bun": "^1.3.8",
+    "git-cz": "^4.9.0",
+    "oxfmt": "^0.28.0",
+    "oxlint": "^1.43.0"
   }
 }
