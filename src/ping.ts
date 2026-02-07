@@ -1,4 +1,4 @@
-import { $ } from 'bun';
+import { $ } from "bun";
 
 export async function ping(ip: string): Promise<number> {
   try {

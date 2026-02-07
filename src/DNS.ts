@@ -20,23 +20,19 @@ export class DNS {
   private async resolve4(hostname: string, server: string) {
     const resolver = new dns.Resolver();
     resolver.setServers([server]);
-    const IPs = await resolver.resolve4(hostname);
-    for (const ip of IPs) {
-      this.hosts[ip] = hostname;
+    try {
+      const IPs = await resolver.resolve4(hostname);
+      for (const ip of IPs) {
+        this.hosts[ip] = hostname;
+      }
+    } catch (err) {
+      console.error(`Failed to resolve ${hostname} with server ${server}:`);
     }
   }
 
   async lookup(hostname: string) {
-    const res = await Promise.allSettled(
+    await Promise.allSettled(
       this.servers.map((server) => this.resolve4(hostname, server)),
     );
-    for (const result of res) {
-      if (result.status === "rejected") {
-        console.error(
-          `Failed to resolve ${hostname} with server ${result.reason.server}:`,
-          result.reason.error,
-        );
-      }
-    }
   }
 }
