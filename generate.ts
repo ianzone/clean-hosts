@@ -28,8 +28,7 @@ const response = await fetch('https://gitee.com/api/v5/gists/hzp8a5rsjygdeuon0k3
   body: JSON.stringify({ access_token: 'c88b3a2aaaf8f067d61780676cf5376f', body: hostsFileContent }),
 });
 
-const result = await response.json();
-console.log(result);
+console.log('STATUS', response.status);
 
 // await Bun.write('hosts', hostsFileContent);
 console.log('Hosts file generated');
