@@ -3,6 +3,7 @@
   "type": "module",
   "scripts": {
     "check": "bun ./check.ts",
+    "build": "bun ./generate.ts",
     "commit": "git add -A && git-cz"
   },
   "devDependencies": {

@@ -4,4 +4,4 @@ const response = await fetch(
 const res = await response.json();
 const hosts = res[0].body;
 await Bun.write('hosts', hosts);
-await Bun.write('README.md', `***text\n${hosts}***`);
+await Bun.write('README.md', `\`\`\`text\n${hosts}\n\`\`\``);
