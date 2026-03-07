@@ -4,7 +4,7 @@ displayName: build
 triggers:
   trigger: auto
   schedule:
-    - cron: '* * 1 * * ? *'
+    - cron: '* 0 1 * * ? *'
 stages:
   - name: build
     displayName: build
